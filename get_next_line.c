@@ -6,7 +6,7 @@
 /*   By: fdeville <fdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 05:20:23 by fdeville          #+#    #+#             */
-/*   Updated: 2026/01/08 06:15:41 by fdeville         ###   ########.fr       */
+/*   Updated: 2026/01/08 06:40:13 by fdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ char	*append(char *dest, char buffer[BUFFER_SIZE], int start, int end)
 		start++;
 	}
 	tmp[i + start] = '\0';
-	printf("Tmp = `%s`\n", tmp);
-	if (dest)
-		free(dest);
+	// printf("Tmp = `%s`\n", tmp);
+	// if (dest)
+		// free(dest);
 	return (tmp);
 }
 
@@ -102,16 +102,22 @@ char	*get_next_line(int fd)
 	int			r;
 	int			idx;
 
-	if (buffer[0])
-		line = append(line, buffer, ft_strchr(buffer, '\n'), BUFFER_SIZE - 1);
+	if (buffer[0] != '\0')
+	{
+		idx = ft_strchr(buffer, '\n');
+		if (idx < 0)
+			line = append(line, buffer, 0, ft_strlen(buffer));
+		else
+			line = append(line, buffer, idx, BUFFER_SIZE - 1);
+	}
 	r = read(fd, buffer, BUFFER_SIZE);
 	idx = 0;
-	while (r > 0 && idx >= 0)
+	while (r > 0)
 	{
 		// printf("====  [DEBUG]  ====\n r = %d\n buff = %s\n====  [DEBUG]  ====\n", r, buffer);
 		idx = ft_strchr(buffer, '\n');
 		printf("idx %d\n", idx);
-		if (!idx)
+		if (idx < 0)
 		{
 			line = append(line, buffer, 0, BUFFER_SIZE - 1);
 			r = read(fd, buffer, BUFFER_SIZE);
@@ -119,9 +125,12 @@ char	*get_next_line(int fd)
 		else
 		{
 			line = append(line, buffer, 0, idx);
+			break ;
 		}
-		printf("[DEBUG] line after append : `%s`\n", line);
+		// printf("[DEBUG] line after append : `%s`\n", line);
 	}
+	printf("buffer before shift : `%s`\n", buffer);
 	shift_buff(buffer);
+	printf("buffer after shift : `%s`\n", buffer);
 	return (line);
 }
