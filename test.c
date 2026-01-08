@@ -21,10 +21,10 @@ int main(int argc, char *argv[])
     int     i;
 
     i = 0;
-    while (i < 50)
+    while (i < 6)
     {
         line = get_next_line(fd);
-        printf("Line %d : %s", i, line);
+        printf("Line %d : %s\n", i, line);
         i++;
     }
 

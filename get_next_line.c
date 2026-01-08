@@ -6,16 +6,16 @@
 /*   By: fdeville <fdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 05:20:23 by fdeville          #+#    #+#             */
-/*   Updated: 2026/01/08 06:40:13 by fdeville         ###   ########.fr       */
+/*   Updated: 2026/01/08 07:38:21 by fdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
 
-int	ft_strlen(char *s)
+int ft_strlen(char *s)
 {
-	int	i;
+	int i;
 
 	if (!s)
 		return (0);
@@ -25,16 +25,16 @@ int	ft_strlen(char *s)
 	return (i);
 }
 
-char	*append(char *dest, char buffer[BUFFER_SIZE], int start, int end)
+char *append(char *dest, char buffer[BUFFER_SIZE], int start, int end)
 {
-	int		dest_l;
-	int		i;
-	char	*tmp;
+	int dest_l;
+	int i;
+	char *tmp;
 
 	if (end < start)
 		return (dest);
 	dest_l = ft_strlen(dest);
-	printf("Append buffer (from %d to %d) to line (len %d)\n", start, end, dest_l);
+	// printf("Append buffer (from %d to %d) to line (len %d)\n", start, end, dest_l);
 	tmp = (char *)malloc((dest_l + (end - start) + 1) * sizeof(char));
 	if (!tmp)
 		return (NULL);
@@ -44,23 +44,25 @@ char	*append(char *dest, char buffer[BUFFER_SIZE], int start, int end)
 		tmp[i] = dest[i];
 		i++;
 	}
-	if (tmp[i - 1] == '\0')
+	if (i > 0 && tmp[i - 1] == '\0')
 		i--;
 	while (start <= end)
 	{
-		tmp[i + start] = buffer[start];
+		// printf("l51 : tmp[%d] = %c\n", i, buffer[start]);
+		tmp[i] = buffer[start];
+		i++;
 		start++;
 	}
-	tmp[i + start] = '\0';
+	tmp[i] = '\0';
 	// printf("Tmp = `%s`\n", tmp);
 	// if (dest)
-		// free(dest);
+	// free(dest);
 	return (tmp);
 }
 
-int	ft_strchr(char buffer[BUFFER_SIZE], char c)
+int ft_strchr(char buffer[BUFFER_SIZE], char c)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (i < BUFFER_SIZE && buffer[i])
@@ -72,11 +74,12 @@ int	ft_strchr(char buffer[BUFFER_SIZE], char c)
 	return (-1);
 }
 
-void	shift_buff(char buffer[BUFFER_SIZE])
+void shift_buff(char buffer[BUFFER_SIZE])
 {
-	int	idx;
-	int	i;
+	int idx;
+	int i;
 
+	// printf("!!!! SHIFT BUFFER BEFORE = `%s`\n", buffer);
 	idx = ft_strchr(buffer, '\n');
 	i = 0;
 	if (idx < 0)
@@ -93,22 +96,35 @@ void	shift_buff(char buffer[BUFFER_SIZE])
 		}
 		buffer[i] = '\0';
 	}
+	// printf("!!!! SHIFT BUFFER AFTER = `%s`\n", buffer);
 }
 
-char	*get_next_line(int fd)
+char *get_next_line(int fd)
 {
-	static char	buffer[BUFFER_SIZE];
-	char		*line;
-	int			r;
-	int			idx;
+	static char buffer[BUFFER_SIZE];
+	char *line;
+	int r;
+	int idx;
 
-	if (buffer[0] != '\0')
+	line = NULL;
+	// printf("START OF GNL !! LINE = %s\n", line);
+
+	if (buffer[0])
 	{
-		idx = ft_strchr(buffer, '\n');
-		if (idx < 0)
-			line = append(line, buffer, 0, ft_strlen(buffer));
-		else
-			line = append(line, buffer, idx, BUFFER_SIZE - 1);
+		shift_buff(buffer);
+		if (ft_strlen(buffer))
+		{
+			idx = ft_strchr(buffer, '\n');
+			if (idx > -1)
+			{
+				line = append(line, buffer, 0, idx);
+				return (line);
+			}
+			else
+			{
+				line = append(line, buffer, 0, ft_strlen(buffer));
+			}
+		}
 	}
 	r = read(fd, buffer, BUFFER_SIZE);
 	idx = 0;
@@ -116,21 +132,18 @@ char	*get_next_line(int fd)
 	{
 		// printf("====  [DEBUG]  ====\n r = %d\n buff = %s\n====  [DEBUG]  ====\n", r, buffer);
 		idx = ft_strchr(buffer, '\n');
-		printf("idx %d\n", idx);
+		// printf("idx %d\n", idx);
 		if (idx < 0)
 		{
-			line = append(line, buffer, 0, BUFFER_SIZE - 1);
+			line = append(line, buffer, 0, r - 1);
 			r = read(fd, buffer, BUFFER_SIZE);
 		}
 		else
 		{
 			line = append(line, buffer, 0, idx);
-			break ;
+			break;
 		}
 		// printf("[DEBUG] line after append : `%s`\n", line);
 	}
-	printf("buffer before shift : `%s`\n", buffer);
-	shift_buff(buffer);
-	printf("buffer after shift : `%s`\n", buffer);
 	return (line);
 }
