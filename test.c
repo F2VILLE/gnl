@@ -21,11 +21,11 @@ int main(int argc, char *argv[])
     int     i;
 
     i = 0;
-    while (i < 6)
+    line = get_next_line(fd);
+    while (line)
     {
+        printf("Line : %s\n", line);
         line = get_next_line(fd);
-        printf("Line %d : %s\n", i, line);
-        i++;
     }
 
     return (0);
