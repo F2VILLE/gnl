@@ -6,7 +6,7 @@
 /*   By: fdeville <fdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 13:31:26 by fdeville          #+#    #+#             */
-/*   Updated: 2026/01/09 16:36:49 by fdeville         ###   ########.fr       */
+/*   Updated: 2026/01/09 20:41:56 by fdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	fill(char *b, char c, int s)
 	i = 0;
 	while (i < s)
 	{
-		b[i] = 0;
+		b[i] = c;
 		i++;
 	}
 }
@@ -83,8 +83,7 @@ char	*append(char *dest, char buffer[BUFFER_SIZE], int start, int end)
 	dest_l = ft_strlen(dest);
 	tmp = (char *)malloc((dest_l
 				+ (end - start + 1) /* sliced buffer (+1 -> end included)*/
-				+ 1 /* \0 */
-				) * sizeof(char));
+				+ 1 /* \0 */) * sizeof(char));
 	if (!tmp)
 		return (NULL);
 	fill(tmp, 0, (dest_l + (end - start) + 1));
@@ -100,41 +99,4 @@ char	*append(char *dest, char buffer[BUFFER_SIZE], int start, int end)
 	if (dest)
 		free(dest);
 	return (tmp);
-}
-
-int	ft_strchr(char buffer[BUFFER_SIZE], char c)
-{
-	int	i;
-
-	i = 0;
-	while (i < BUFFER_SIZE && buffer[i])
-	{
-		if (buffer[i] == c)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-void	shift_buff(char buffer[BUFFER_SIZE])
-{
-	int	idx;
-	int	i;
-
-	idx = ft_strchr(buffer, '\n');
-	i = 0;
-	if (idx >= 0)
-	{
-		idx++;
-		while ((idx + i) < BUFFER_SIZE)
-		{
-			buffer[i] = buffer[idx + i];
-			i++;
-		}
-	}
-	while (i < BUFFER_SIZE)
-	{
-		buffer[i] = '\0';
-		i++;
-	}
 }

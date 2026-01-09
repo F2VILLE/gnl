@@ -6,11 +6,48 @@
 /*   By: fdeville <fdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 05:20:23 by fdeville          #+#    #+#             */
-/*   Updated: 2026/01/09 16:35:55 by fdeville         ###   ########.fr       */
+/*   Updated: 2026/01/09 20:40:36 by fdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+int	ft_strchr(char buffer[BUFFER_SIZE], char c)
+{
+	int	i;
+
+	i = 0;
+	while (i < BUFFER_SIZE && buffer[i])
+	{
+		if (buffer[i] == c)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+void	shift_buff(char buffer[BUFFER_SIZE])
+{
+	int	idx;
+	int	i;
+
+	idx = ft_strchr(buffer, '\n');
+	i = 0;
+	if (idx >= 0)
+	{
+		idx++;
+		while ((idx + i) < BUFFER_SIZE)
+		{
+			buffer[i] = buffer[idx + i];
+			i++;
+		}
+	}
+	while (i < BUFFER_SIZE)
+	{
+		buffer[i] = '\0';
+		i++;
+	}
+}
 
 char	*get_next_line(int fd)
 {
