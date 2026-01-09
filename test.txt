@@ -1,3 +1,0 @@
-This is small
-text
-file indeed
