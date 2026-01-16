@@ -6,7 +6,7 @@
 /*   By: fdeville <fdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 20:42:46 by fdeville          #+#    #+#             */
-/*   Updated: 2026/01/16 16:09:09 by fdeville         ###   ########.fr       */
+/*   Updated: 2026/01/16 16:19:03 by fdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ char	*append(char *dest, char buffer[BUFFER_SIZE], int start, int end)
 	if (end < start)
 		return (dest);
 	dest_l = ft_strlen(dest);
-	printf("(start = %d. end = %d) Appending buffer [%s] to dest [%s]\n", start, end, buffer, dest);
 	tmp = (char *)malloc((dest_l + (end - start + 1) + 1) * sizeof(char));
 	if (!tmp)
 		return (NULL);
@@ -81,7 +80,7 @@ int	ft_strchr(char buffer[BUFFER_SIZE], char c)
 	return (-1);
 }
 
-void fill(char *dst, char c, int size)
+void	fill(char *dst, char c, int size)
 {
 	int	i;
 
@@ -90,31 +89,5 @@ void fill(char *dst, char c, int size)
 	{
 		dst[i] = c;
 		i++;
-	}
-}
-
-void	shift_buff(char buffer[BUFFER_SIZE])
-{
-	int	idx;
-	int	i;
-
-	idx = ft_strchr(buffer, '\n');
-	printf("Shifting buffer (idx %d)\n", idx);
-	i = 0;
-	if (idx < 0)
-	{
-		fill(buffer, 0, BUFFER_SIZE);
-	}
-	else
-	{
-		idx++;
-		while ((i) < BUFFER_SIZE)
-		{
-			if (idx + i < BUFFER_SIZE)
-				buffer[i] = buffer[idx + i];
-			else
-				buffer[i] = 0;
-			i++;
-		}
 	}
 }

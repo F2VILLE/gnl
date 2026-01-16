@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
 
     i = 0;
     line = get_next_line(fd);
+    printf("Meow");
     while (line)
     {
         printf("Line : %s\n", line);
