@@ -6,7 +6,7 @@
 /*   By: fdeville <fdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 20:42:46 by fdeville          #+#    #+#             */
-/*   Updated: 2026/01/16 13:39:13 by fdeville         ###   ########.fr       */
+/*   Updated: 2026/01/16 16:09:09 by fdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ void	shift_buff(char buffer[BUFFER_SIZE])
 	int	i;
 
 	idx = ft_strchr(buffer, '\n');
+	printf("Shifting buffer (idx %d)\n", idx);
 	i = 0;
 	if (idx < 0)
 	{
