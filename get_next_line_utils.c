@@ -6,7 +6,7 @@
 /*   By: fdeville <fdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 20:42:46 by fdeville          #+#    #+#             */
-/*   Updated: 2026/01/09 21:00:48 by fdeville         ###   ########.fr       */
+/*   Updated: 2026/01/16 12:43:12 by fdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,19 @@ int	ft_strlen(char *s)
 	return (i);
 }
 
+int	ft_strncpy(char *dst, char *src, int s)
+{
+	int	i;
+
+	i = 0;
+	while (i < s)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	return (i);
+}
+
 char	*append(char *dest, char buffer[BUFFER_SIZE], int start, int end)
 {
 	int		dest_l;
@@ -33,15 +46,10 @@ char	*append(char *dest, char buffer[BUFFER_SIZE], int start, int end)
 	if (end < start)
 		return (dest);
 	dest_l = ft_strlen(dest);
-	tmp = (char *)malloc((dest_l + (end - start) + 1) * sizeof(char));
+	tmp = (char *)malloc((dest_l + (end - start + 1) + 1) * sizeof(char));
 	if (!tmp)
 		return (NULL);
-	i = 0;
-	while (i < dest_l)
-	{
-		tmp[i] = dest[i];
-		i++;
-	}
+	i = ft_strncpy(tmp, dest, dest_l);
 	if (i > 0 && tmp[i - 1] == '\0')
 		i--;
 	while (start <= end)
@@ -81,19 +89,13 @@ void fill(char *dst, char c, int size)
 		i++;
 	}
 }
-#include <stdio.h>
+
 void	shift_buff(char buffer[BUFFER_SIZE])
 {
 	int	idx;
 	int	i;
 
 	idx = ft_strchr(buffer, '\n');
-	printf("Shifting buffer (idx %d)\nBuffer :\n```\n", idx);
-	for (int j = 0; j < BUFFER_SIZE; j++)
-	{
-		printf("buff[%d] = `%c`\n", j, buffer[j] == '\n' ? '@' : buffer[j]);
-	}
-	printf("\n```\n");
 	i = 0;
 	if (idx < 0)
 	{
@@ -102,11 +104,13 @@ void	shift_buff(char buffer[BUFFER_SIZE])
 	else
 	{
 		idx++;
-		while ((idx + i) < BUFFER_SIZE)
+		while ((i) < BUFFER_SIZE)
 		{
-			buffer[i] = buffer[idx + i];
+			if (idx + i < BUFFER_SIZE)
+				buffer[i] = buffer[idx + i];
+			else
+				buffer[i] = 0;
 			i++;
 		}
-		buffer[i] = '\0';
 	}
 }
