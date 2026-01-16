@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
     while (line)
     {
         printf("Line : %s\n", line);
+        free(line);
         line = get_next_line(fd);
     }
 

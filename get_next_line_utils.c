@@ -6,7 +6,7 @@
 /*   By: fdeville <fdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 20:42:46 by fdeville          #+#    #+#             */
-/*   Updated: 2026/01/16 12:43:12 by fdeville         ###   ########.fr       */
+/*   Updated: 2026/01/16 13:39:13 by fdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	ft_strncpy(char *dst, char *src, int s)
 	int	i;
 
 	i = 0;
+	if (!dst || !src)
+		return (0);
 	while (i < s)
 	{
 		dst[i] = src[i];
@@ -46,6 +48,7 @@ char	*append(char *dest, char buffer[BUFFER_SIZE], int start, int end)
 	if (end < start)
 		return (dest);
 	dest_l = ft_strlen(dest);
+	printf("(start = %d. end = %d) Appending buffer [%s] to dest [%s]\n", start, end, buffer, dest);
 	tmp = (char *)malloc((dest_l + (end - start + 1) + 1) * sizeof(char));
 	if (!tmp)
 		return (NULL);

@@ -6,12 +6,11 @@
 /*   By: fdeville <fdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 05:20:23 by fdeville          #+#    #+#             */
-/*   Updated: 2026/01/09 20:48:52 by fdeville         ###   ########.fr       */
+/*   Updated: 2026/01/16 13:50:08 by fdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
 
 char	*get_next_line(int fd)
 {
@@ -21,6 +20,7 @@ char	*get_next_line(int fd)
 	int			idx;
 
 	line = NULL;
+
 
 	if (buffer[0])
 	{
@@ -39,11 +39,26 @@ char	*get_next_line(int fd)
 			}
 		}
 	}
+	printf("GET_NEXT_LINE CALLED > BUFFER = ```\n");
+	for (int i = 0; i < BUFFER_SIZE; i++)
+	{
+		if (buffer[i] < 32)
+			printf("[0x%X]\n", buffer[i]);
+		else
+			printf("[%c]\n", buffer[i]);
+	}
+	printf("```\n");
+
 	r = 1;
 	while (r > 0)
 	{
 		r = read(fd, buffer, BUFFER_SIZE);
+		if (r < BUFFER_SIZE)
+		{
+			printf("Read less than buffer size !!!");
+		}
 		idx = ft_strchr(buffer, '\n');
+		printf("read %d; idx %d\n", r, idx);
 		if (idx < 0)
 			line = append(line, buffer, 0, r - 1);
 		else
