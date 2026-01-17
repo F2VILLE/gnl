@@ -1,9 +1,0 @@
-this is
-some
-text
-and bullshit to test
-
-the
-
-program
-
