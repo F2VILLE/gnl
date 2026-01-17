@@ -6,7 +6,7 @@
 /*   By: fdeville <fdeville@student.42belgium.be    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 05:20:23 by fdeville          #+#    #+#             */
-/*   Updated: 2026/01/17 16:43:59 by fdeville         ###   ########.fr       */
+/*   Updated: 2026/01/17 18:13:28 by fdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ int	buffer_check(char buffer[BUFFER_SIZE], char **line)
 			else
 			{
 				*line = append(*line, buffer, 0, ft_strlen(buffer));
+				if (!(*line))
+					return (0);
 			}
 		}
 	}
@@ -80,11 +82,15 @@ int	gnloop(char buffer[BUFFER_SIZE], char **line, int r)
 	if (r == -1)
 	{
 		clear_buffer(buffer);
+		if ((*line))
+			free(*line);
 		return (0);
 	}
 	idx = ft_strchr(buffer, '\n');
 	if (idx < 0)
 		*line = append(*line, buffer, 0, r - 1);
+		if (!(*line))
+			return (0);
 	else
 	{
 		*line = append(*line, buffer, 0, idx);
