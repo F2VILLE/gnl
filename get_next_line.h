@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdeville <fdeville@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fdeville <fdeville@student.42belgium.be    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 05:20:43 by fdeville          #+#    #+#             */
-/*   Updated: 2026/01/16 16:25:48 by fdeville         ###   ########.fr       */
+/*   Updated: 2026/01/17 16:44:45 by fdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-#include <stdio.h>
 
 char	*get_next_line(int fd);
 char	*append(char *dest, char buffer[BUFFER_SIZE], int start, int end);

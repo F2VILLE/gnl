@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdeville <fdeville@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fdeville <fdeville@student.42belgium.be    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 05:20:23 by fdeville          #+#    #+#             */
-/*   Updated: 2026/01/16 16:35:04 by fdeville         ###   ########.fr       */
+/*   Updated: 2026/01/17 16:43:59 by fdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,27 @@ int	buffer_check(char buffer[BUFFER_SIZE], char **line)
 	return (1);
 }
 
+void	clear_buffer(char buffer[BUFFER_SIZE])
+{
+	int	i;
+
+	i = 0;
+	while (i < BUFFER_SIZE)
+	{
+		buffer[i] = 0;
+		i++;
+	}
+}
+
 int	gnloop(char buffer[BUFFER_SIZE], char **line, int r)
 {
 	int			idx;
 
+	if (r == -1)
+	{
+		clear_buffer(buffer);
+		return (0);
+	}
 	idx = ft_strchr(buffer, '\n');
 	if (idx < 0)
 		*line = append(*line, buffer, 0, r - 1);
@@ -83,14 +100,6 @@ char	*get_next_line(int fd)
 	int			r;
 
 	line = NULL;
-	for (int i = 0; i < BUFFER_SIZE; i++)
-	{
-		if (buffer[i] < 32)
-			printf("[0x%X]", buffer[i]);
-		else
-			printf("[%c]", buffer[i]);
-	}
-	printf("\n");
 	if (!buffer_check(buffer, &line))
 		return (line);
 	r = 1;
@@ -102,3 +111,39 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
+/*
+#include "get_next_line.h"
+#include <stdio.h>
+#include <fcntl.h>
+
+int main(int argc, char *argv[])
+{
+    printf("Argc : %d\n", argc);
+    if (argc != 2)
+    {
+        printf("Usage: %s <file>", argv[0]);
+        return (0);
+    }
+    int fd = open(argv[1], O_RDONLY);
+    printf("Fd: %d\n", fd);
+    if (fd < 0)
+    {
+        printf("Error opening file");
+        return (1);
+    }
+    char    *line;
+    int     i;
+
+    i = 0;
+    line = get_next_line(fd);
+    printf("Meow");
+    while (line)
+    {
+        printf("Line : %s\n", line);
+        free(line);
+        line = get_next_line(fd);
+    }
+
+    return (0);
+}
+*/

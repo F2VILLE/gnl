@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdeville <fdeville@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fdeville <fdeville@student.42belgium.be    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 20:42:46 by fdeville          #+#    #+#             */
-/*   Updated: 2026/01/16 16:19:03 by fdeville         ###   ########.fr       */
+/*   Updated: 2026/01/17 16:43:08 by fdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
