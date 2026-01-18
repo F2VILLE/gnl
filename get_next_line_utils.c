@@ -6,7 +6,7 @@
 /*   By: fdeville <fdeville@student.42belgium.be    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 20:42:46 by fdeville          #+#    #+#             */
-/*   Updated: 2026/01/17 18:19:46 by fdeville         ###   ########.fr       */
+/*   Updated: 2026/01/18 04:13:13 by fdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,12 @@ char	*append(char *dest, char buffer[BUFFER_SIZE], int start, int end)
 	dest_l = ft_strlen(dest);
 	tmp = (char *)malloc((dest_l + (end - start + 1) + 1) * sizeof(char));
 	if (!tmp)
+	{
+		if (dest)
+			free(dest);
 		return (NULL);
+	}
 	i = ft_strncpy(tmp, dest, dest_l);
-	if (i > 0 && tmp[i - 1] == '\0')
-		i--;
 	while (start <= end)
 	{
 		tmp[i] = buffer[start];
@@ -71,7 +73,7 @@ int	ft_strchr(char buffer[BUFFER_SIZE], char c)
 	int	i;
 
 	i = 0;
-	while (i < BUFFER_SIZE && buffer[i])
+	while (i < BUFFER_SIZE)
 	{
 		if (buffer[i] == c)
 			return (i);

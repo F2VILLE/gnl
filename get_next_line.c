@@ -6,7 +6,7 @@
 /*   By: fdeville <fdeville@student.42belgium.be    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 05:20:23 by fdeville          #+#    #+#             */
-/*   Updated: 2026/01/17 18:19:39 by fdeville         ###   ########.fr       */
+/*   Updated: 2026/01/18 04:28:20 by fdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,27 +61,12 @@ int	buffer_check(char buffer[BUFFER_SIZE], char **line)
 	return (1);
 }
 
-void	clear_buffer(char buffer[BUFFER_SIZE])
-{
-	int	i;
-
-	i = 0;
-	while (i < BUFFER_SIZE)
-	{
-		buffer[i] = 0;
-		i++;
-	}
-}
-
 int	gnloop(char buffer[BUFFER_SIZE], char **line, int r)
 {
-	int			idx;
+	int	idx;
 
-	if (r == -1)
-	{
-		clear_buffer(buffer);
-		return (0);
-	}
+	if (r < BUFFER_SIZE)
+		fill(buffer + r, 0, BUFFER_SIZE - r);
 	idx = ft_strchr(buffer, '\n');
 	if (idx < 0)
 		*line = append(*line, buffer, 0, r - 1);
@@ -90,25 +75,42 @@ int	gnloop(char buffer[BUFFER_SIZE], char **line, int r)
 		*line = append(*line, buffer, 0, idx);
 		return (0);
 	}
+	if (!*line)
+		return (-1);
 	return (1);
+}
+
+int	process_read(int fd, char buffer[BUFFER_SIZE], char **line)
+{
+	int	r;
+	int	ret;
+
+	r = read(fd, buffer, BUFFER_SIZE);
+	if (r <= 0)
+		return (0);
+	ret = gnloop(buffer, line, r);
+	return (ret);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	buffer[BUFFER_SIZE];
 	char		*line;
-	int			r;
+	int			check;
 
 	line = NULL;
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
+	{
+		fill(buffer, 0, BUFFER_SIZE);
+		return (NULL);
+	}
 	if (!buffer_check(buffer, &line))
 		return (line);
-	r = 1;
-	while (r > 0)
-	{
-		r = read(fd, buffer, BUFFER_SIZE);
-		if (!gnloop(buffer, &line, r))
-			break ;
-	}
+	check = 1;
+	while (check == 1)
+		check = process_read(fd, buffer, &line);
+	if (check == -1)
+		return (free(line), NULL);
 	return (line);
 }
 /*
@@ -118,32 +120,32 @@ char	*get_next_line(int fd)
 
 int main(int argc, char *argv[])
 {
-    printf("Argc : %d\n", argc);
-    if (argc != 2)
-    {
-        printf("Usage: %s <file>", argv[0]);
-        return (0);
-    }
-    int fd = open(argv[1], O_RDONLY);
-    printf("Fd: %d\n", fd);
-    if (fd < 0)
-    {
-        printf("Error opening file");
-        return (1);
-    }
-    char    *line;
-    int     i;
+	printf("Argc : %d\n", argc);
+	if (argc != 2)
+	{
+		printf("Usage: %s <file>", argv[0]);
+		return (0);
+	}
+	int fd = open(argv[1], O_RDONLY);
+	printf("Fd: %d\n", fd);
+	if (fd < 0)
+	{
+		printf("Error opening file");
+		return (1);
+	}
+	char    *line;
+	int     i;
 
-    i = 0;
-    line = get_next_line(fd);
-    printf("Meow");
-    while (line)
-    {
-        printf("Line : %s\n", line);
-        free(line);
-        line = get_next_line(fd);
-    }
+	i = 0;
+	line = get_next_line(fd);
+	printf("Meow");
+	while (line)
+	{
+		printf("Line : %s\n", line);
+		free(line);
+		line = get_next_line(fd);
+	}
 
-    return (0);
+	return (0);
 }
 */
